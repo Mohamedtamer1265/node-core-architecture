@@ -99,3 +99,30 @@ console.timeEnd("writeMany"); // 1.792ms ms memory usage 63% and cpu 16%
     console.timeEnd("writeMany");
   });
 })();
+/*
+                 STREAM SYSTEM
+
+     READABLE                         WRITABLE
+        │                               │
+        │ chunks                        │
+        ↓                               ↑
+   ┌─────────┐                      ┌─────────┐
+   │ Buffer  │                      │ Buffer  │
+   └─────────┘                      └─────────┘
+        │                               │
+        └────────── pipe() ─────────────┘
+                       │
+                 backpressure
+                       │
+              buffer gets full
+                       │
+                write() = false
+                       │
+                 STOP sending
+                       │
+                 buffer drains
+                       │
+                    drain
+                       │
+                CONTINUE sending
+      */
